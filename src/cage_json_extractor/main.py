@@ -79,4 +79,8 @@ def parse_args() -> argparse.Namespace:
 
 
 def get_collapsed(db: sqlite3.Connection, name: str) -> bool:
-    db.execute("SELECT collapsed FROM cages where name=?", (name,)).fetchone()
+    bool(
+        db.execute(
+            "SELECT collapsed FROM cages WHERE name=?", (name,)
+        ).fetchone()
+    )
