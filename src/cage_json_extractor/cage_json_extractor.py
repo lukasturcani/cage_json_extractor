@@ -18,7 +18,7 @@ def main() -> None:
         json_db = json.load(f)
 
     for cage_json in json_db:
-        smiles_building_blocks: list[atomlite.Json] = []
+        smiles_building_blocks = []
         for bb_json in cage_json["building_blocks"]:
             ((_, bb_mol_block),) = bb_json["conformers"]
             bb = rdkit.MolFromMolBlock(
@@ -49,10 +49,10 @@ def main() -> None:
         topology = get_topology(cage_json["topology"])
         db.update_entries(
             entries=atomlite.Entry.from_rdkit(
-                key=f'{"-".join(smiles)}-{topology}',
+                key=f'{"-".join(smiles_building_blocks)}-{topology}',
                 molecule=cage,
                 properties={
-                    "smiles_building_blocks": smiles_building_blocks,
+                    "smiles_building_blocks": smiles_building_blocks,  # type: ignore
                     "name": cage_json["name"],
                     "collapsed": get_collapsed(
                         db=property_db,
