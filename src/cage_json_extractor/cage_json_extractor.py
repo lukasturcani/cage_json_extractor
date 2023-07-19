@@ -18,8 +18,6 @@ def main() -> None:
         json_db = json.load(f)
 
     for cage_json in json_db:
-        if "FourPlusSix" not in cage_json["topology"]:
-            continue
         smiles_building_blocks: list[atomlite.Json] = []
         inchi_building_blocks: list[atomlite.Json] = []
         for bb_json in cage_json["building_blocks"]:
@@ -62,6 +60,7 @@ def main() -> None:
                     "inchi_building_blocks": inchi_building_blocks,
                     "name": cage_json["name"],
                     "collapsed": get_collapsed(property_db, cage_json["name"]),
+                    "topology": cage_json["topology"],
                 },
             ),
             commit=False,

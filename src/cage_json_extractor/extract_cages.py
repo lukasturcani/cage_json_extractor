@@ -17,6 +17,7 @@ def main() -> None:
         if (
             "inchi_building_blocks" in entry.properties
             and entry.properties["collapsed"] is False
+            and args.topology in cast(str, entry.properties["topology"])
         ):
             num_persistent += 1
             smiles_building_blocks = cast(
@@ -69,6 +70,7 @@ def main() -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("database", type=pathlib.Path)
+    parser.add_argument("topology", type=pathlib.Path)
     parser.add_argument(
         "--output_directory",
         type=pathlib.Path,

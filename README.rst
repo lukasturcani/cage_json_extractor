@@ -32,16 +32,16 @@ And run
 .. code-block:: bash
 
   tar xf cages.tar.gz
-  cage_json_extractor cages/amines2aldehydes3.json cage_prediction.db amines2aldehydes3.db
+  cage_json_extractor cages/amine2aldehyde3.json cage_prediction.db amine2aldehyde3.db
 
 Now if we want to extract all the shape persistent 4+6 cages we can run
 
 .. code-block:: bash
 
-  extract_cages amines2aldehydes3.db FourPlusSix --output_directory extracted_cages
+  extract_cages amine2aldehyde3.db FourPlusSix --output_directory extracted_cages
 
 This will create a folder ``extracted_cages`` which holds a sub-folder for every
-shape persistent 4+6 cage in ``amines2aldehydes3.db``. In the sub-folder you will
+shape persistent 4+6 cage in ``amine2aldehyde3.db``. In the sub-folder you will
 find the ``.mol`` file of the cage and its building blocks.
 
 Enjoy! (and sorry I deprecated the ``.json`` files)
