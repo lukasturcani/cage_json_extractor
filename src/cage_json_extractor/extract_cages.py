@@ -53,11 +53,13 @@ def main() -> None:
         elif (
             "inchi_building_blocks" in entry.properties
             and entry.properties["collapsed"] is True
+            and args.topology in cast(str, entry.properties["topology"])
         ):
             num_collapsed += 1
         elif (
             "inchi_building_blocks" in entry.properties
             and entry.properties["collapsed"] is None
+            and args.topology in cast(str, entry.properties["topology"])
         ):
             num_undetermined += 1
 
