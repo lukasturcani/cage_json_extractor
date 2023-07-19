@@ -10,6 +10,8 @@ maintainers = [
 
 dependencies = [
   "rdkit",
+  "atomlite",
+  "stk",
 ]
 requires-python = ">=3.11"
 dynamic = ["version"]
@@ -51,5 +53,7 @@ warn_unreachable = true
 disallow_any_generics = true
 
 [[tool.mypy.overrides]]
-module = []
+module = [
+  "rdkit.*",
+]
 ignore_missing_imports = true
