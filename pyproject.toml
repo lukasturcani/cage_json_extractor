@@ -22,6 +22,8 @@ dev = [
   "black",
   "ruff",
   "mypy",
+  "build",
+  "twine",
 ]
 
 [project.urls]
