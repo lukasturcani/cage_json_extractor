@@ -78,9 +78,18 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def get_collapsed(db: sqlite3.Connection, name: str) -> bool:
-    return bool(
-        db.execute(
-            "SELECT collapsed FROM cages WHERE name=?", (name,)
-        ).fetchone()[0]
-    )
+def get_collapsed(db: sqlite3.Connection, name: str) -> bool | None:
+    (value,) = db.execute(
+        "SELECT collapsed "
+        "FROM cages "
+        "WHERE name=? "
+        "AND reaction LIKE '%amine2aldehyde3%' "
+        "AND topology LIKE '%FourPlusSix%'",
+        (name,),
+    ).fetchone()
+    if value == 0 or value == 1:
+        return bool(value)
+    elif value is None:
+        return None
+    else:
+        raise RuntimeError("goofed")

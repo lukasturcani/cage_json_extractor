@@ -12,10 +12,11 @@ def main() -> None:
     db = atomlite.Database(args.database)
     num_collapsed = 0
     num_persistent = 0
+    num_undetermined = 0
     for entry in db.get_entries():
         if (
             "inchi_building_blocks" in entry.properties
-            and not entry.properties["collapsed"]
+            and entry.properties["collapsed"] is False
         ):
             num_persistent += 1
             smiles_building_blocks = cast(
@@ -50,13 +51,19 @@ def main() -> None:
                 )
         elif (
             "inchi_building_blocks" in entry.properties
-            and entry.properties["collapsed"]
+            and entry.properties["collapsed"] is True
         ):
             num_collapsed += 1
+        elif (
+            "inchi_building_blocks" in entry.properties
+            and entry.properties["collapsed"] is None
+        ):
+            num_undetermined += 1
 
-    print(f"Total cages: {num_collapsed+num_persistent}")
+    print(f"Total cages: {num_collapsed+num_persistent+num_undetermined}")
     print(f"Num collapsed: {num_collapsed}")
     print(f"Num persistent: {num_persistent}")
+    print(f"Num undetermined: {num_undetermined}")
 
 
 def parse_args() -> argparse.Namespace:
