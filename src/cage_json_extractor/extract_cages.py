@@ -72,7 +72,7 @@ def main() -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("database", type=pathlib.Path)
-    parser.add_argument("topology", type=pathlib.Path)
+    parser.add_argument("topology")
     parser.add_argument(
         "--output_directory",
         type=pathlib.Path,
