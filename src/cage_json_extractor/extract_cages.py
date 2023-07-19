@@ -15,7 +15,7 @@ def main() -> None:
     num_undetermined = 0
     for entry in db.get_entries():
         if (
-            "inchi_building_blocks" in entry.properties
+            "smiles_building_blocks" in entry.properties
             and entry.properties["collapsed"] is False
             and args.topology in cast(str, entry.properties["topology"])
         ):
@@ -24,9 +24,9 @@ def main() -> None:
                 list[str],
                 entry.properties["smiles_building_blocks"],
             )
-            inchi_building_blocks = cast(
+            smiles_building_blocks = cast(
                 list[str],
-                entry.properties["inchi_building_blocks"],
+                entry.properties["smiles_building_blocks"],
             )
 
             cage_name = "_".join(smiles_building_blocks)
@@ -36,7 +36,7 @@ def main() -> None:
             cage = atomlite.json_to_rdkit(entry.molecule)
             building_blocks = [
                 atomlite.json_to_rdkit(bb_entry.molecule)
-                for bb_entry in db.get_entries(inchi_building_blocks)
+                for bb_entry in db.get_entries(smiles_building_blocks)
             ]
 
             rdkit.MolToMolFile(
@@ -51,13 +51,13 @@ def main() -> None:
                     forceV3000=True,
                 )
         elif (
-            "inchi_building_blocks" in entry.properties
+            "smiles_building_blocks" in entry.properties
             and entry.properties["collapsed"] is True
             and args.topology in cast(str, entry.properties["topology"])
         ):
             num_collapsed += 1
         elif (
-            "inchi_building_blocks" in entry.properties
+            "smiles_building_blocks" in entry.properties
             and entry.properties["collapsed"] is None
             and args.topology in cast(str, entry.properties["topology"])
         ):

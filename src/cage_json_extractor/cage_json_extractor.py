@@ -19,7 +19,6 @@ def main() -> None:
 
     for cage_json in json_db:
         smiles_building_blocks: list[atomlite.Json] = []
-        inchi_building_blocks: list[atomlite.Json] = []
         for bb_json in cage_json["building_blocks"]:
             ((_, bb_mol_block),) = bb_json["conformers"]
             bb = rdkit.MolFromMolBlock(
@@ -28,21 +27,18 @@ def main() -> None:
                 removeHs=False,
             )
             stk_bb = stk.BuildingBlock.init_from_rdkit_mol(bb)
-            inchi = stk.Inchi().get_key(stk_bb)
             smiles = stk.Smiles().get_key(stk_bb)
             db.update_entries(
                 entries=atomlite.Entry.from_rdkit(
-                    key=inchi,
+                    key=smiles,
                     molecule=bb,
                     properties={
                         "smiles": smiles,
-                        "inchi": inchi,
                     },
                 ),
                 commit=False,
             )
             smiles_building_blocks.append(smiles)
-            inchi_building_blocks.append(inchi)
 
         ((_, cage_mol_block),) = cage_json["conformers"]
         cage = rdkit.MolFromMolBlock(
@@ -50,22 +46,21 @@ def main() -> None:
             sanitize=False,
             removeHs=False,
         )
-        stk_cage = stk.BuildingBlock.init_from_rdkit_mol(cage)
+        topology = get_topology(cage_json["topology"])
         db.update_entries(
             entries=atomlite.Entry.from_rdkit(
-                key=stk.Inchi().get_key(stk_cage),
+                key=f'{"-".join(smiles)}-{topology}',
                 molecule=cage,
                 properties={
                     "smiles_building_blocks": smiles_building_blocks,
-                    "inchi_building_blocks": inchi_building_blocks,
                     "name": cage_json["name"],
                     "collapsed": get_collapsed(
                         db=property_db,
                         name=cage_json["name"],
                         reaction=args.json.stem,
-                        topology=get_topology(cage_json["topology"]),
+                        topology=topology,
                     ),
-                    "topology": cage_json["topology"],
+                    "topology": topology,
                 },
             ),
             commit=False,
