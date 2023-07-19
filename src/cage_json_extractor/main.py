@@ -16,6 +16,8 @@ def main() -> None:
         json_db = json.load(f)
 
     for cage_json in json_db:
+        if "FourPlusSix" not in cage_json["topology"]:
+            continue
         smiles_building_blocks: list[atomlite.Json] = []
         inchi_building_blocks: list[atomlite.Json] = []
         for bb_json in cage_json["building_blocks"]:
