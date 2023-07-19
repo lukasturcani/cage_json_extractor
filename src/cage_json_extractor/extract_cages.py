@@ -10,8 +10,14 @@ def main() -> None:
     args = parse_args()
     args.output_directory.mkdir(exist_ok=True, parents=True)
     db = atomlite.Database(args.database)
+    num_collapsed = 0
+    num_persistent = 0
     for entry in db.get_entries():
-        if "inchi_building_blocks" in entry.properties:
+        if (
+            "inchi_building_blocks" in entry.properties
+            and not entry.properties["collapsed"]
+        ):
+            num_persistent += 1
             smiles_building_blocks = cast(
                 list[str],
                 entry.properties["smiles_building_blocks"],
@@ -42,6 +48,15 @@ def main() -> None:
                     str(cage_directory / f"bb_{i}.mol"),
                     forceV3000=True,
                 )
+        elif (
+            "inchi_building_blocks" in entry.properties
+            and entry.properties["collapsed"]
+        ):
+            num_collapsed += 1
+
+    print(f"Total cages: {num_collapsed+num_persistent}")
+    print(f"Num collapsed: {num_collapsed}")
+    print(f"Num persistent: {num_persistent}")
 
 
 def parse_args() -> argparse.Namespace:

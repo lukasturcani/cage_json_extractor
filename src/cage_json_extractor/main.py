@@ -1,6 +1,7 @@
 import argparse
 import json
 import pathlib
+import sqlite3
 
 import atomlite
 import rdkit.Chem.AllChem as rdkit
@@ -10,7 +11,8 @@ import stk
 def main() -> None:
     args = parse_args()
 
-    db = atomlite.Database(args.database)
+    db = atomlite.Database(args.output_database)
+    property_db = sqlite3.connect(args.property_database)
 
     with open(args.json) as f:
         json_db = json.load(f)
@@ -58,6 +60,8 @@ def main() -> None:
                 properties={
                     "smiles_building_blocks": smiles_building_blocks,
                     "inchi_building_blocks": inchi_building_blocks,
+                    "name": cage_json["name"],
+                    "collapsed": get_collapsed(property_db, cage_json["name"]),
                 },
             ),
             commit=False,
@@ -69,5 +73,10 @@ def main() -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("json", type=pathlib.Path)
-    parser.add_argument("database", type=pathlib.Path)
+    parser.add_argument("property_database", type=pathlib.Path)
+    parser.add_argument("output_database", type=pathlib.Path)
     return parser.parse_args()
+
+
+def get_collapsed(db: sqlite3.Connection, name: str) -> bool:
+    db.execute("SELECT collapsed FROM cages where name=?", (name,)).fetchone()
