@@ -56,8 +56,8 @@ def main() -> None:
                 key=stk.Inchi().get_key(stk_cage),
                 molecule=cage,
                 properties={
-                    "smiles_bulding_blocks": smiles_building_blocks,
-                    "inchi_bulding_blocks": inchi_building_blocks,
+                    "smiles_building_blocks": smiles_building_blocks,
+                    "inchi_building_blocks": inchi_building_blocks,
                 },
             ),
             commit=False,
