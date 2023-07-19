@@ -29,6 +29,8 @@ github = "https://github.com/lukasturcani/cage_json_extractor"
 
 [project.scripts]
 cage_json_extractor = "cage_json_extractor.main:main"
+extract_cages = "cage_json_extractor.extract_cages:main"
+
 
 [tool.setuptools_scm]
 fallback_version = "0.0.0"
