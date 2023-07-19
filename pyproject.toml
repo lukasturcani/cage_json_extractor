@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cage_json_extractor"
+maintainers = [
+  { name = "Lukas Turcani", email = "lukasturcani93@gmail.com" },
+]
+
+dependencies = [
+  "rdkit",
+]
+requires-python = ">=3.11"
+dynamic = ["version"]
+readme = "README.rst"
+
+[project.optional-dependencies]
+dev = [
+  "black",
+  "ruff",
+  "mypy",
+]
+
+[project.urls]
+github = "https://github.com/lukasturcani/cage_json_extractor"
+
+[project.scripts]
+cage_json_extractor = "cage_json_extractor.main:main"
+
+[tool.setuptools_scm]
+fallback_version = "0.0.0"
+
+[tool.ruff]
+line-length = 79
+extend-select = ["I"]
+
+[tool.black]
+line-length = 79
+
+[tool.mypy]
+show_error_codes = true
+implicit_optional = false
+warn_no_return = true
+strict_optional = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+warn_unreachable = true
+disallow_any_generics = true
+
+[[tool.mypy.overrides]]
+module = []
+ignore_missing_imports = true
