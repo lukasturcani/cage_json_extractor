@@ -2,6 +2,7 @@ import argparse
 import json
 import pathlib
 import sqlite3
+from typing import cast
 
 import atomlite
 import rdkit.Chem.AllChem as rdkit
@@ -52,7 +53,10 @@ def main() -> None:
                 key=f'{"-".join(smiles_building_blocks)}-{topology}',
                 molecule=cage,
                 properties={
-                    "smiles_building_blocks": smiles_building_blocks,  # type: ignore
+                    "smiles_building_blocks": cast(
+                        list[atomlite.Json],
+                        smiles_building_blocks,
+                    ),
                     "name": cage_json["name"],
                     "collapsed": get_collapsed(
                         db=property_db,
