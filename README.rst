@@ -44,6 +44,12 @@ This will create a folder ``extracted_cages`` which holds a sub-folder for every
 shape persistent 4+6 cage in ``amine2aldehyde3.db``. In the sub-folder you will
 find the ``.mol`` file of the cage and its building blocks.
 
+The script will also output the number of collapsed, persistent and uncategorized
+cages it found. You can compare that to the numbers reported in the paper_, to make
+sure that the extraction and data conversion was done correctly.
+
+.. _paper: https://pubs.acs.org/doi/10.1021/acs.chemmater.8b03572
+
 Enjoy! (and sorry I deprecated the ``.json`` files)
 
 =)
